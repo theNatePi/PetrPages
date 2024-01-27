@@ -1,28 +1,25 @@
-// App.js
-
-import React from 'react';
-import { ChakraProvider, CSSReset, ColorModeProvider, Flex, Center } from '@chakra-ui/react';
-import UserProfile from './UserProfile';
-
-const user = {
-  name: 'Bowen Wang',
-  bio: 'Testing User Profile',
-  tags: ['Fortnite', 'League of Legend'],
-};
+import logo from './logo.svg';
+import './App.css';
 
 function App() {
   return (
-    <ChakraProvider>
-      <CSSReset />
-      <ColorModeProvider>
-        <Flex minHeight="100vh" align="center" justify="center">
-          <Center>
-            <UserProfile user={user} />
-          </Center>
-        </Flex>
-      </ColorModeProvider>
-    </ChakraProvider>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
   );
-}
+};
 
-export default App;
+export default SignUpPage;
