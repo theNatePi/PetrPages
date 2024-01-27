@@ -19,9 +19,8 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiResponse = await getAPI('/page/?username=gyr&school_id=1'); // Replace 'user-profile' with your actual API endpoint
+        const apiResponse = await getAPI('/page/?username=petr&school_id=1'); // Replace 'user-profile' with your actual API endpoint
         const userData = apiResponse[0]
-        console.log(userData);
         console.log(JSON.parse(userData.tags));
         
 
@@ -30,7 +29,8 @@ function App() {
         setUser({
           name: userData.name,
           bio: userData.bio,
-          tags: JSON.parse(userData.tags), // Assuming tags is a JSON string
+          tags: JSON.parse(userData.tags).tags.split(', '),
+          //tags: userData.tags ? userData.tags.split(',').map(tag => tag.trim()) : [], // Assuming tags is a JSON string
           
         });
         } catch (error) {
