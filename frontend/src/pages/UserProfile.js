@@ -35,9 +35,15 @@ const UserProfile = ({ user, updateUser }) => {
 
   const handleSaveTagsClick = () => {
     // Split the edited tags string into an array
-    const updatedTags = editedTags.split(',').map(tag => tag.trim());
+    try{
+    const updatedTags = editedTags.split(',').map(tag => tag.trim()) || [];
     updateUser({ ...user, tags: updatedTags });
     setIsEditingTags(false);
+    }
+    catch (error)
+    {
+      console.log('empty tag')
+    }
   };
   return (
     <Grid
