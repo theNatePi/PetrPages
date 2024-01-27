@@ -21,5 +21,8 @@ const getAPI = async (path) => {
 //   setLoading(true);
 // }
 
-export default getAPI;
-
+const postAPI = async (path, body) => {
+  const response = await Backend.post(path, body);
+  return JSON.parse(response.data);
+};
+export {postAPI, getAPI};
