@@ -10,7 +10,16 @@ const getAPI = async (path) => {
     const response = await Backend.get(path);
     return JSON.parse(response);
 };
+// Example:
+// Notes: Muse use await/async
+// try {
+//   const response = await callAPI("/schools/");
+//   setSchools(response.data);
+//   setLoading(true);
+// } catch (err) {
+//   console.log(err);
+//   setLoading(true);
+// }
 
-
-export default callAPI;
+export default getAPI;
 
