@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import {ChakraProvider, Box, Heading, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button, Link as ChakraLink, Select } from '@chakra-ui/react';
-import {getAPI, postAPI} from './utils/util';
+import {getAPI, postAPI} from '../utils/util';
 
 
 
@@ -14,6 +14,7 @@ const SignUpPage = () => {
   // Setter and getter for password visibility
   const [show, setShow] = useState(false);
 
+  const [successCode, setSuccessCode] = useState(-1);
 
   // Create dictionary for form fields
   const [formData, setFormData] = useState(
@@ -44,15 +45,23 @@ const SignUpPage = () => {
     // Add your signup logic here
     formData["school_id"] = parseInt(formData["school_id"]);
     postUserInfo();
+    switch(successCode)
+    {
+      case -1:
+        
+      case 0:
+      case 1:
+      case 2:
+    }
   };
-  // API post to send user sign up info
+
+  // API post to send user sign up info on Submit
   const postUserInfo = async() => 
   {
     try {
       const userData = Object.fromEntries(Object.keys(formData).map((key) => [key, formData[key]]));
-      console.log(userData);
       const response = await postAPI("/create_user/", userData);
-      console.log(response);
+      setSuccessCode(response);
     } catch (err) {
       console.log(err);
     }}

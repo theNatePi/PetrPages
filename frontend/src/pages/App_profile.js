@@ -3,7 +3,7 @@
 import React, { useState , useEffect} from 'react';
 import { ChakraProvider, CSSReset, ColorModeProvider, Flex, Center } from '@chakra-ui/react';
 import UserProfile from './UserProfile';
-import {getAPI} from './utils/util';
+import {getAPI} from '../utils/util';
 
 function App() {
   const [user, setUser] = useState({
