@@ -5,7 +5,7 @@ import { ChakraProvider, CSSReset, ColorModeProvider, Flex, Center } from '@chak
 import UserProfile from './UserProfile';
 import {getAPI} from './utils/util';
 
-function App_profile() {
+function App() {
   const [user, setUser] = useState({
     name: '',
     bio: '',
@@ -19,7 +19,7 @@ function App_profile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const apiResponse = await getAPI('/page/?username=petr&school_id=1'); // Replace 'user-profile' with your actual API endpoint
+        const apiResponse = await getAPI('/page/?username=gyr&school_id=1'); // Replace 'user-profile' with your actual API endpoint
         const userData = apiResponse[0]
         console.log(userData);
         console.log(JSON.parse(userData.tags));
@@ -54,4 +54,4 @@ function App_profile() {
   );
 }
 
-export default App_profile;
+export default App;
