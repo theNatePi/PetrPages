@@ -3,6 +3,7 @@ import {ChakraProvider, Box, Heading, FormControl, FormLabel, Input, InputGroup,
 import {getAPI, postAPI} from './utils/util';
 
 
+
 const SignUpPage = () => {
   // Fields for the form
   const formFields = ['username', 'email', 'school_email', 'password', 'school_id'];

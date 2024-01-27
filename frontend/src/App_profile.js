@@ -3,9 +3,9 @@
 import React, { useState , useEffect} from 'react';
 import { ChakraProvider, CSSReset, ColorModeProvider, Flex, Center } from '@chakra-ui/react';
 import UserProfile from './UserProfile';
-import getAPI from './utils/util';
+import {getAPI} from './utils/util';
 
-function App() {
+function App_profile() {
   const [user, setUser] = useState({
     name: '',
     bio: '',
@@ -54,4 +54,4 @@ function App() {
   );
 }
 
-export default App;
+export default App_profile;
