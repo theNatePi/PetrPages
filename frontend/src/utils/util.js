@@ -8,7 +8,7 @@ const Backend = axios.create({
 
 const getAPI = async (path) => {
     const response = await Backend.get(path);
-    return JSON.parse(response);
+    return JSON.parse(response.data);
 };
 // Example:
 // Notes: Muse use await/async
