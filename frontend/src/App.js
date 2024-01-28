@@ -4,6 +4,7 @@ import App_profile from './pages/App_profile';
 import { ChakraBaseProvider } from '@chakra-ui/react';
 import {useState} from "react";
 import LoginPage from './pages/Login';
+import ViewUserProfile from './pages/ViewUserProfile';
 import "./index.css"
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/SignUp" element={<SignUpPage />} />
           <Route path="/Profile" element={<App_profile />} />
           <Route path="/Login" element={<LoginPage />} />
+          <Route path="/ViewProfile" element={<ViewUserProfile />} />
         </Routes>
       </ChakraBaseProvider>
     </div>

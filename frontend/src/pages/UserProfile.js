@@ -1,10 +1,13 @@
 // UserProfile.js
 
 import React , { useState, useEffect }from 'react';
-import { Box, Heading, Text, VStack, Badge, Divider, Grid , Button, HStack, Input, position} from '@chakra-ui/react';
+import { Box, Heading, Text, VStack, Badge, Divider, Grid , Button, HStack, Input, position, Center,} from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+
 import { postAPI, getAPI } from '../utils/util';
 import EditorComponent from '../components/MarkdownEditor';
 import "../index.css"
+import ViewUserProfile from './ViewUserProfile';
 //import utils from utils;
 
 
@@ -12,7 +15,10 @@ const UserProfile = ({ user, updateUser }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedBio, setEditedBio] = useState(user.bio);
   const [isEditingTags, setIsEditingTags] = useState(false);
-  const [editedTags, setEditedTags] = useState(user.tags); // Assuming tags are comma-separated
+  const [editedTags, setEditedTags] = useState(user.tags); 
+  const [searchTags, setSearchTags] = useState(user.tags)
+  const [searchResults, setSearchResults] = useState([]);
+  const navigate = useNavigate()// Assuming tags are comma-separated
 
   // NATE ADDED THIS STUFF
 
@@ -157,11 +163,17 @@ const UserProfile = ({ user, updateUser }) => {
   // END STUFF NATE ADDED
 
   
-  const handleButtonClick = () => {
-    // This function will be executed when the button is clicked
-    alert('Button clicked!'); // Replace this with your desired action
-
+  const handleSearchClick = async () => {
+    try {
+      const response = await postAPI("/search_users/", {"tags": searchTags}); //"league, fortnite, valorant"
+      console.log(response.username)
+      const usernamesArray = (response.username).split(',').map(username => username.trim());
+      setSearchResults(usernamesArray);
+    } catch (error) {
+      console.error('Error searching users:', error);
+    }
   };
+
   const handleToggleEdit = () => {
     setIsEditing((prev) => !prev);
   };
@@ -198,10 +210,7 @@ const UserProfile = ({ user, updateUser }) => {
         updateUser({ ...user, tags: updatedTags });
         
         // Make the API call to update tags
-        await postAPI('/update_tags', {
-          "username": user.name,
-          "tags": updatedTagsString,
-        });
+        await postAPI('/update_tags', {"username": user.name,"tags": updatedTagsString,});
         // if (!response.ok) {
         //   throw new Error('Failed to update tags');
         // }
@@ -218,6 +227,13 @@ const UserProfile = ({ user, updateUser }) => {
       setIsEditingTags(false)
     }
   };
+  const handleUserClick = (username) => {
+    navigate(`/ViewProfile/`)
+    localStorage.setItem('searchedUser', username);
+  };
+
+
+  
   return (
     <Grid
       templateColumns="1fr 2fr 1fr" // Three columns with the middle column being twice the width of the side columns
@@ -360,7 +376,7 @@ const UserProfile = ({ user, updateUser }) => {
 
       {/* Right Block */}
       <Box p={4}
-      maxW = "250px"
+      maxW = "500px"
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
@@ -368,21 +384,42 @@ const UserProfile = ({ user, updateUser }) => {
       boxShadow="md">
         
         {/* Content for the right block */}
+        <Center>
         <Box
         p={3}
-        w = "215px"
+        w = "300px"
         
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
         bg="white"
         boxShadow="lg">
-        <Text>/r Fortnite</Text>
+        <Input
+          placeholder="Search Tags"
+          value={searchTags}
+          onChange={(e) => setSearchTags(e.target.value)}
+        />
         {/* Button */}
-        <Button mt="4" colorScheme="teal"  onClick={handleButtonClick}>
-          Communites
+        <Button size="xs" colorScheme="teal" onClick={handleSearchClick}>
+          Search
         </Button>
+        <VStack align="start" spacing="2">
+    <Text fontWeight="bold">Search Results:</Text>
+    {searchResults && searchResults.length > 0 ? (
+      <VStack align="start" spacing="5">
+        {searchResults.map((username, index) => (
+              <Text key={index} fontSize="xl" color="blue.500" onClick={() => handleUserClick(username)}>
+                {username}
+              </Text>
+            ))}
+      </VStack>
+    ) : (
+      <Text>No results found</Text>
+    )}
+  </VStack>
+
         </Box>
+        </Center>
       </Box>
 
 
