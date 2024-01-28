@@ -16,10 +16,10 @@ const App = () => {
     setUser(updatedUser);
   };
 
-  useEffect(() => {
+  useEffect(() =>  {
     const fetchData = async () => {
       try {
-        const apiResponse = await getAPI('/page/?username=uhi&school_id=1'); // Replace 'user-profile' with your actual API endpoint
+        const apiResponse = await getAPI('/page/?username=Bowen&school_id=1'); // Replace 'user-profile' with your actual API endpoint
         const userData = apiResponse[0]
         console.log(userData);
 
@@ -27,13 +27,11 @@ const App = () => {
         
 
         //console.log('Parsed User Data:', userData);
-
-        setUser({
+        updateUser({
           name: userData.name || '',
           bio: userData.bio || '',
           tags: JSON.parse(userData.tags).tags.split(',').map(tag => tag.trim())
           //tags: userData.tags ? userData.tags.split(',').map(tag => tag.trim()) : [], // Assuming tags is a JSON string
-          
         });
         } catch (error) {
         console.error('Error fetching user data:', error);
@@ -48,6 +46,8 @@ const App = () => {
       <ColorModeProvider>
         <Flex minHeight="100vh" align="center" justify="center">
           <Center>
+            {console.log("user")}
+            {console.log(user.name)}
             <UserProfile user={user} updateUser={updateUser} />
           </Center>
         </Flex>

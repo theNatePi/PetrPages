@@ -7,13 +7,11 @@ import { postAPI, getAPI } from '../utils/util';
 //import utils from utils;
 
 
-const UserProfile = ({ user, updateUser, onSearch }) => {
+const UserProfile = ({ user, updateUser }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedBio, setEditedBio] = useState(user.bio);
   const [isEditingTags, setIsEditingTags] = useState(false);
   const [editedTags, setEditedTags] = useState(user.tags); // Assuming tags are comma-separated
-  const [searchTerm, setSearchTerm] = useState('');
-
 
   // NATE ADDED THIS STUFF
 
@@ -129,10 +127,7 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
     }
   };
 
-  const handleSearch = () => {
-    // You can perform any search-related logic here
-    onSearch(searchTerm);
-  };
+
 
 
   // END STUFF NATE ADDED
@@ -146,22 +141,13 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
   const handleToggleEdit = () => {
     setIsEditing((prev) => !prev);
   };
-  const handleSaveClick = async () => {
-    // Trim leading and trailing spaces from editedBio
-    const trimmedBio = editedBio.trim();
+  const handleSaveClick = () => {
+    // Implement your logic to save the edited bio
+    // For now, let's just log the edited bio
+    console.log('Saving bio:', editedBio);
+    updateUser({ ...user, bio: editedBio });
 
-    // Update user with updated bio
-    updateUser({ ...user, bio: trimmedBio });
 
-    // Make an API request to update user bio
-    try {
-      await postAPI('/update_bio', { "username":user.name, "bio": trimmedBio }); // Replace 'id' and '/update-bio' with your actual identifier and API path
-      console.log('User bio updated successfully!');
-    } catch (error) {
-      console.error('Error updating user bio:', error);
-    }
-
-    // Set isEditing to false
     setIsEditing(false);
   };
   
@@ -169,39 +155,12 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
     setIsEditingTags(!isEditingTags);
   };
 
-  const handleSaveTagsClick = async () => {
-    try {
-      // Split the edited tags string into an array
-      if (isEditingTags) {
-        // Split the edited tags string into an array
-        const updatedTags = editedTags.split(',').map(tag => tag.trim()) || [];
-        const updatedTagsString = updatedTags.join(',');
-        
-        updateUser({ ...user, tags: updatedTags });
-        
-        // Make the API call to update tags
-        const response = await postAPI('/update_tags', {
-          "username": user.name,
-          "tags": updatedTagsString,
-        });
-        // if (!response.ok) {
-        //   throw new Error('Failed to update tags');
-        // }
-
-        // Update the local state
-      }
-
-      // Close the tags editing mode
-
-    } catch (error) {
-      console.error('Error updating tags:', error);
-    }finally {
-      // Close the tags editing mode
-      setIsEditingTags(false)
-    }
+  const handleSaveTagsClick = () => {
+    // Split the edited tags string into an array
+    const updatedTags = editedTags.split(',').map(tag => tag.trim());
+    updateUser({ ...user, tags: updatedTags });
+    setIsEditingTags(false);
   };
-
-  
   return (
     <Grid
       templateColumns="1fr 2fr 1fr" // Three columns with the middle column being twice the width of the side columns
@@ -211,7 +170,7 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
       {/* Left Block */}
       <Box p={4}
       w = "400px"
-      h = "1000px"
+      h = "8000px"
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
@@ -332,7 +291,7 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
       <Box
         p={50}
         w = "700px"
-        h = "1000px"
+        h = "8000px"
         borderWidth="1px"
         borderRadius="lg"
         overflow="hidden"
@@ -356,7 +315,8 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
               onChangeSize={(height, width) => changeSize(image.id, { height, width })}
               onDoubleTap={() => handleDoubleTap(image.id)}/>
             </div>
-          ))}
+          ))
+          }
         </div>
         
 
@@ -381,14 +341,10 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
         overflow="hidden"
         bg="white"
         boxShadow="lg">
-        <Input
-          type="text"
-          placeholder="Search Tags"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <Button ml="1" colorScheme="teal" onClick={handleSearch} size = "xs">
-          Search
+        <Text>/r Fortnite</Text>
+        {/* Button */}
+        <Button mt="4" colorScheme="teal"  onClick={handleButtonClick}>
+          Communites
         </Button>
         </Box>
       </Box>
