@@ -4,6 +4,7 @@ import React , { useState, useEffect }from 'react';
 import { Box, Heading, Text, VStack, Badge, Divider, Grid , Button, HStack, Input, position} from '@chakra-ui/react';
 import { postAPI, getAPI } from '../utils/util';
 import EditorComponent from '../components/MarkdownEditor';
+import "../index.css"
 //import utils from utils;
 
 
@@ -354,13 +355,12 @@ const UserProfile = ({ user, updateUser }) => {
         bg="white"
         boxShadow="lg"
       >
-
-      <EditorComponent readOnly={false} />
-      
-
+        {/* <div style={{fontSize: 50}}>  */}
+          <EditorComponent readOnly={false} /> 
+        {/* </div>  */}
         
 
-      </Box>
+    </Box>
 
       {/* Right Block */}
       <Box p={4}

@@ -4,6 +4,8 @@ import App_profile from './pages/App_profile';
 import { ChakraBaseProvider } from '@chakra-ui/react';
 import {useState} from "react";
 import LoginPage from './pages/Login';
+import "./index.css"
+
 const App = () => {
   return (
     <div>
