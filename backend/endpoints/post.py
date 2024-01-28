@@ -1,7 +1,7 @@
 from api import app
 import json
-from components import userLogin, newUser, pageData, newBio, newTags
-from database import get_user, get_email_domain, get_password_from_user, add_new_users, add_page_with_user, set_new_page_with_user, update_bio, update_tags
+from components import userLogin, newUser, pageData, newBio, newTags, tagsSearch
+from database import get_user, get_email_domain, get_password_from_user, add_new_users, add_page_with_user, set_new_page_with_user, update_bio, update_tags, get_names_with_tags
 
 
 
@@ -24,6 +24,14 @@ async def post_bio(bio_data: newBio):
 async def post_tags(tags_data: newTags):
     json_tags = json.dumps({"tags": tags_data.tags})
     update_tags(json_tags, tags_data.username)
+
+@app.post("/search_users/")
+async def post_search_results(search_tags: tagsSearch):
+    results = get_names_with_tags(search_tags.tags)
+    results = ','.join(list(results))
+    json_result = json.dumps({"username": results})
+    return {json_result}
+    
 
 
 @app.post("/create_user/")
