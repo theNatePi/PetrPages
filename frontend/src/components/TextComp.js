@@ -1,10 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { Text } from '@chakra-ui/react';
 import interact from 'interactjs';
+import { MyContext } from './Context';
 
-const ImageComponent = ({m_id, m_zIndex, m_rotation, m_x, m_y, m_width, m_height, m_imageURL, onMoveUpdate, onRotate, onChangeURL, onChangeSize, onDoubleTap}) => {
+const TextComponent = ({m_id, m_zIndex, m_rotation, m_x, m_y, m_width, m_height, m_content, onMoveUpdate, onRotate, onChangeContent, onChangeSize, onDoubleTap}) => {
   const thisRef = useRef(null);
   let doubleTapHandled = false;
-  let currentImage = m_imageURL;
+  let currentContent = m_content;
   let mainWidth = m_width;
   let mainHeight = m_height;
   let mainX = m_x;
@@ -20,12 +22,11 @@ const ImageComponent = ({m_id, m_zIndex, m_rotation, m_x, m_y, m_width, m_height
         const deleted = onDoubleTap();
         if (!deleted) {
           // Prompt the user for a new image URL
-          const newImageUrl = window.prompt('Enter the new image URL:');
-          if (newImageUrl) {
+          const newContent = window.prompt('Enter the new image URL:');
+          if (newContent) {
               // Update the image source with the new URL
-              thisRef.current.src = newImageUrl;
-              onChangeURL(newImageUrl);
-              currentImage = newImageUrl;
+              onChangeContent(newContent);
+              currentContent = newContent;
           }
 
           const newAngle = window.prompt('Enter rotation angle (in degrees):');
@@ -131,14 +132,14 @@ const ImageComponent = ({m_id, m_zIndex, m_rotation, m_x, m_y, m_width, m_height
     return () => {
         interactInstance.off('doubletap', handleDoubleTap);
     }
-  }, [m_id, m_zIndex, m_rotation, m_x, m_y, m_width, m_height, m_imageURL, onMoveUpdate, onRotate, onChangeURL, onChangeSize, onDoubleTap]);
+  }, [m_id, m_zIndex, m_rotation, m_x, m_y, m_width, m_height, m_content, onMoveUpdate, onRotate, onChangeContent, onChangeSize, onDoubleTap]);
 
   return (
-    <img ref={thisRef}
-    src={currentImage} width={mainWidth} height={mainHeight} 
-    style={{transform: translateString, position: "absolute"}}
-    ></img>
+    <Text ref={thisRef}
+    width={mainWidth} height={mainHeight} 
+    style={{transform: translateString}}
+    >currentContent</Text>
     );
 };
 
-export default ImageComponent;
+export default TextComponent;
