@@ -1,11 +1,12 @@
 // App.js
 
-import React, { useState , useEffect} from 'react';
+import React, { useContext, useState , useEffect} from 'react';
 import { ChakraProvider, CSSReset, ColorModeProvider, Flex, Center } from '@chakra-ui/react';
 import UserProfile from './UserProfile';
 import {getAPI} from '../utils/util';
+import { MyContext } from '../components/Context';
+const App = () => {
 
-function App() {
   const [user, setUser] = useState({
     name: '',
     bio: '',
@@ -21,15 +22,17 @@ function App() {
       try {
         const apiResponse = await getAPI('/page/?username=petr&school_id=1'); // Replace 'user-profile' with your actual API endpoint
         const userData = apiResponse[0]
+        console.log(userData);
+
         console.log(JSON.parse(userData.tags));
         
 
         //console.log('Parsed User Data:', userData);
 
         setUser({
-          name: userData.name,
-          bio: userData.bio,
-          tags: JSON.parse(userData.tags).tags.split(', '),
+          name: userData.name || '',
+          bio: userData.bio || '',
+          tags: userData.TAGS ? JSON.parse(userData.TAGS).split('\n').map(tag => tag.trim()) : [],
           //tags: userData.tags ? userData.tags.split(',').map(tag => tag.trim()) : [], // Assuming tags is a JSON string
           
         });
