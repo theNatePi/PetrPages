@@ -1,18 +1,11 @@
-import React, { useContext, useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import {ChakraProvider, Grid, Alert, Box, Heading, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button, Link as ChakraLink, Select } from '@chakra-ui/react';
 import {getAPI, postAPI} from '../utils/util';
-import { MyContext } from '../components/Context';
+
 
 const SignUpPage = () => {
-  
   // Fields for the form
-  const formFields = ['username', 'email', 'school_email', 'password', 'school_id'];
-  const codeConfig = {
-    "-1": "Failed Sign Up!",
-    "0": "Username is taken!",
-    "1": "Invalid school email!",
-    "2": "Successful Sign Up!"
-  };
+  const formFields = ['username', 'password'];
   // stters and getters for school
   const [schools, setSchools] = useState([]);
   const [loading, setLoading] = useState(true);
