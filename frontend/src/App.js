@@ -7,6 +7,7 @@ import LoginPage from './pages/Login';
 import ViewUserProfile from './pages/ViewUserProfile';
 import "./index.css"
 
+
 const App = () => {
   return (
     <div>

@@ -18,6 +18,9 @@ const UserProfile = ({ user, updateUser }) => {
   const [editedTags, setEditedTags] = useState(user.tags); 
   const [searchTags, setSearchTags] = useState(user.tags)
   const [searchResults, setSearchResults] = useState([]);
+  const [allUsernames, setAllUsername] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(true);
+
   const navigate = useNavigate()// Assuming tags are comma-separated
 
 
@@ -80,6 +83,8 @@ const UserProfile = ({ user, updateUser }) => {
       console.log(response.username)
       const usernamesArray = (response.username).split(',').map(username => username.trim());
       setSearchResults(usernamesArray);
+      setShowSearchResults(true);
+
     } catch (error) {
       console.error('Error searching users:', error);
     }
@@ -142,7 +147,19 @@ const UserProfile = ({ user, updateUser }) => {
     navigate(`/ViewProfile/`)
     localStorage.setItem('searchedUser', username);
   };
+  
+  const handleDisplayAllUsers = async() => {
+    try {
+      const response = await postAPI("/get_all_users/"); //"league, fortnite, valorant"
+      console.log(response.username)
+      const allSsernames = (response.username).split(',').map(username => username.trim());
+      setAllUsername(allSsernames);
+      setShowSearchResults(false);
 
+    } catch (error) {
+      console.error('Error searching users:', error);
+    }
+  };
 
   
   return (
@@ -287,45 +304,60 @@ const UserProfile = ({ user, updateUser }) => {
         
         {/* Content for the right block */}
         <Center>
-        <Box
-        p={3}
-        w = "300px"
-        
-        borderWidth="1px"
-        borderRadius="lg"
-        overflow="hidden"
-        bg="white"
-        boxShadow="lg">
-        <Input
-          placeholder="Search Tags"
-          value={searchTags}
-          onChange={(e) => setSearchTags(e.target.value)}
-        />
-        {/* Button */}
-        <Button size="xs" colorScheme="teal" onClick={handleSearchClick}>
-          Search
-        </Button>
-        <VStack align="start" spacing="2">
+<Box
+  p={3}
+  w="300px"
+  borderWidth="1px"
+  borderRadius="lg"
+  overflow="hidden"
+  bg="white"
+  boxShadow="lg"
+>
+  <Input
+    placeholder="Search Tags"
+    value={searchTags}
+    onChange={(e) => setSearchTags(e.target.value)}
+  />
+  {/* Search and Display All Users Buttons */}
+  <HStack spacing={20}>
+    <Button size="xs" colorScheme="teal" onClick={handleSearchClick}>
+      Search
+    </Button>
+    <Button size="xs" colorScheme="teal" onClick={handleDisplayAllUsers} _hover={{ cursor: 'pointer' }}>
+      Display All Users
+    </Button>
+  </HStack>
+  {/* Display Search Results */}
+  <VStack align="start" spacing="2">
     <Text fontWeight="bold">Search Results:</Text>
     {searchResults && searchResults.length > 0 ? (
       <VStack align="start" spacing="5">
         {searchResults.map((username, index) => (
-              <Text key={index} fontSize="xl" color="blue.500" onClick={() => handleUserClick(username)}>
-                {username}
-              </Text>
-            ))}
+          <Text key={index} fontSize="xl" color="blue.500" onClick={() => handleUserClick(username)} _hover={{ cursor: 'pointer' }}>
+            {username}
+          </Text>
+        ))}
       </VStack>
     ) : (
       <Text>No results found</Text>
     )}
   </VStack>
+  {/* Display All Users */}
+  {showSearchResults || ( // Only render if showSearchResults is false (i.e., show all users)
+    <VStack align="start" spacing="2">
+      <Text fontWeight="bold">All Users:</Text>
+      {allUsernames.map((username, index) => (
+          <Text key={index} fontSize="xl" color="blue.500" onClick={() => handleUserClick(username)} _hover={{ cursor: 'pointer' }}>
+            {username}
+          </Text>
+        ))}
+      {/* Add logic here to map over all users and display them similarly to search results */}
+    </VStack>
+  )}
+</Box>
 
-        </Box>
         </Center>
       </Box>
-
-
-
     </Grid>
   );
 };
