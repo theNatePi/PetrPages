@@ -158,30 +158,52 @@ const UserProfile = ({ user, updateUser }) => {
   const handleToggleEdit = () => {
     setIsEditing((prev) => !prev);
   };
-  const handleSaveClick = () => {
-    // Implement your logic to save the edited bio
-    // For now, let's just log the edited bio
-    console.log('Saving bio:', editedBio);
-    updateUser({ ...user, bio: editedBio });
+  const handleSaveClick = async () => {
+    // Trim leading and trailing spaces from editedBio
+    const trimmedBio = editedBio.trim();
 
+    // Update user with updated bio
+    updateUser({ ...user, bio: trimmedBio });
 
+    // Make an API request to update user bio
+    try {
+      await postAPI('/update_bio', { "username":user.name, "bio": trimmedBio }); // Replace 'id' and '/update-bio' with your actual identifier and API path
+      console.log('User bio updated successfully!');
+    } catch (error) {
+      console.error('Error updating user bio:', error);
+    }
+
+    // Set isEditing to false
     setIsEditing(false);
   };
   
   const handleToggleEditTags = () => {
     setIsEditingTags(!isEditingTags);
   };
+  const handleSaveTagsClick = async () => {
+    try {
+      // Split the edited tags string into an array
+      const updatedTags = editedTags.split(',').map(tag => tag.trim()) || [];
+      const updatedTagsString = updatedTags.join(',');
 
-  const handleSaveTagsClick = () => {
-    // Split the edited tags string into an array
-    try{
-    const updatedTags = editedTags.split(',').map(tag => tag.trim()) || [];
-    updateUser({ ...user, tags: updatedTags });
-    setIsEditingTags(false);
-    }
-    catch (error)
-    {
-      console.log('empty tag')
+
+      // Make the API call to update tags
+      const response = await postAPI('/update_tags', {
+        "username": user.name, "tags": updatedTagsString,
+
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update tags');
+      }
+
+      // Update the local state
+      updateUser({ ...user, tags: updatedTags });
+
+      // Close the tags editing mode
+      setIsEditingTags(false);
+    } catch (error) {
+      console.error('Error updating tags:', error);
     }
   };
   return (
