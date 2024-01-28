@@ -50,7 +50,7 @@ const UserProfile = ({ user, updateUser }) => {
     const newImage = {  
       id: Date.now(),
       zIndex: zIndex,
-      rotation: 90,
+      rotation: 0,
       x_pos: 150,
       y_pos: 150,
       width: 150,
