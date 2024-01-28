@@ -20,126 +20,28 @@ const UserProfile = ({ user, updateUser }) => {
   const [searchResults, setSearchResults] = useState([]);
   const navigate = useNavigate()// Assuming tags are comma-separated
 
+
+  const [pageContents, updatePageContents] = useState([]);
+
   // NATE ADDED THIS STUFF
 
-  useEffect(() => {
-    // window.onload = () => {
-    //   handleLoadLogic();
-    // };
-    if (user.name) {
-      handleLoadLogic();
-    }
-    // const timer = setTimeout(() => {
-    //   console.log("run");
-    //   console.log(user);
-    //   handleLoadLogic();
-    // }, 10000);
-    // return () => clearTimeout(timer);
-  }, [user]);
 
-
-  const exportPageData = (elements) => {
-    let result = JSON.stringify(elements);
+  const exportPageData = (exportedContents) => {
+    let result = JSON.stringify(exportedContents);
     return result;
   }
   
   const importPageData = (pageJson) => {
     let pageData = JSON.parse(pageJson);
     console.log(pageData);
-    setElements(pageData);
   }
 
-  const [elements, setElements] = useState([]);
-  const [zIndex, setZIndex] = useState(100);
-
-  const spawnImage = () => {
-    const newImage = {  
-      type: "image",
-      id: Date.now(),
-      zIndex: zIndex,
-      rotation: 0,
-      x_pos: 50,
-      y_pos: 50,
-      width: 150,
-      height: 150,
-      imageURL: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.treehugger.com%2Fthmb%2F3TkFQq0-PZH3FCmFsl-aZ2nW3Bc%3D%2F4086x2724%2Ffilters%3Ano_upscale()%3Amax_bytes(150000)%3Astrip_icc()%2Fgiant-anteater--myrmecophaga-tridactyla-532346712-a32c4e8bbd80451da0382b8c704df1b6.jpg&f=1&nofb=1&ipt=8913269515359809a4fd1533cc66c7f97debd293c087e6edac26a7217070165c&ipo=images"
-    };
-    setElements((prevImages) => [...prevImages, newImage]);
-    setZIndex((prevZIndex) => prevZIndex - 1);
-  };
-
-  const spawnText = () => {
-    const newText = { 
-      type: "text", 
-      id: Date.now(),
-      zIndex: zIndex,
-      rotation: 0,
-      x_pos: 50,
-      y_pos: 50,
-      width: 150,
-      height: 150,
-      content: "Double Click To Edit"
-    };
-    setElements((prevElements) => [...prevElements, newText]);
-    setZIndex((prevZIndex) => prevZIndex - 1);
-  };
-
-  const moveImage = (id, {x, y}) => {
-    setElements((prevImages) =>
-      prevImages.map((image) => (image.id === id ? { ...image, x_pos : parseInt(x, 10), y_pos : parseInt(y, 10) } : image))
-    );
-  };
-
-  const rotateImage = (id, rotation) => {
-    rotation = parseInt(rotation.rotation, 10);
-    setElements((prevImages) =>
-      prevImages.map((image) => (image.id === id ? { ...image, rotation: parseInt(rotation, 10) } : image))
-    );
-  };
-
-  const changeURL = (id, imageURL) => {
-    imageURL = imageURL.url;
-    setElements((prevImages) =>
-      prevImages.map((image) => (image.id === id ? { ...image, imageURL } : image))
-    );
-  };
-
-  const changeContent = (id, content) => {
-    content = content.content;
-    console.log(content);
-    setElements((prevElements) =>
-      prevElements.map((element) => (element.id === id ? { ...element, content } : element))
-    );
-  };
-
-  const changeSize = (id, {height, width}) => {
-    height = parseInt(height, 10);
-    width = parseInt(width, 10);
-    setElements((prevImages) =>
-      prevImages.map((image) => (image.id === id ? { ...image, height : height, width : width } : image))
-    );
-  };
-
-  const deleteImage = (id) => {
-    setElements((prevImages) => prevImages.filter((image) => image.id !== id));
-  };
-
-  const handleDoubleTap = (imageId) => {
-    const shouldDelete = window.confirm('Do you want to delete this image?\nPress cancel to modify image instead.');
-    if (shouldDelete) {
-      deleteImage(imageId);
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   const handleSaveLogic = async () => {
-    const pageData = exportPageData(elements);
+    const pageData = exportPageData(pageContents);
     try {
       const pageDataExport = {
         "username": user.name,
-        "page_json": JSON.stringify(pageData)
+        "page_json": pageData
       }
       console.log(pageDataExport);
       const response = await postAPI("/save_page/", pageDataExport);
@@ -156,6 +58,15 @@ const UserProfile = ({ user, updateUser }) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+
+    if (user.name) {
+      // handleLoadLogic();
+    }
+
+    window.scrollTo(0, 0);
+  }, [user]);
 
 
 
@@ -342,15 +253,6 @@ const UserProfile = ({ user, updateUser }) => {
         boxShadow="lg">
         <VStack align="start" spacing="2"> 
         <Text>Edit your page!</Text>
-          <Button size="sm" colorScheme="teal" onClick={spawnImage}>
-            Add Image
-          </Button>
-          <Button size="sm" colorScheme="teal" onClick={spawnText}>
-            Add Text
-          </Button>
-          <Button size="sm" colorScheme="teal" onClick={handleSaveTagsClick}>
-            Add Button
-          </Button>
           <Button size="sm" colorScheme="green" onClick={handleSaveLogic}>
             Save
           </Button>
@@ -371,7 +273,7 @@ const UserProfile = ({ user, updateUser }) => {
         bg="white"
         boxShadow="lg"
       >
-       <EditorComponent readOnly={false} />
+          <EditorComponent readOnly={false} pageContents={pageContents} updatePageContents={updatePageContents} username={user.name}/>
     </Box>
 
       {/* Right Block */}

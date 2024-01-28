@@ -44,3 +44,8 @@ h5 {
 h6 {
   font-size: 1rem;
 }
+
+.codex-editor {
+  height: 8000px;
+  padding-bottom: 8000px;
+}

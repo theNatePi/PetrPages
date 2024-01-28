@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Heading, Text, VStack, Badge, Divider, Grid, Button, HStack, Link, Center } from '@chakra-ui/react';
 import { getAPI } from '../utils/util';
+import EditorComponent from '../components/MarkdownEditor';
+import { set } from 'lodash';
+import { useParams } from 'react-router-dom';
 
 const ViewUserProfile = ({ match }) => {
   const [user, setUser] = useState({
@@ -11,11 +14,17 @@ const ViewUserProfile = ({ match }) => {
     tags: [],
   });
 
+  const [passableUsername, setPassableUsername] = useState("")
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const usernameParam = localStorage.getItem('searchedUser');
+        console.log("HERE", usernameParam);
+        setPassableUsername(usernameParam);
+        console.log("HERE2", passableUsername);
         const apiResponse = await getAPI(`/get_page/?username=${usernameParam}&school_id=1`);
+        
         //const apiResponse = await getAPI('/get_page/?username=Bowen&school_id=1');
         const userData = apiResponse[0];
 
@@ -30,7 +39,7 @@ const ViewUserProfile = ({ match }) => {
     };
 
     fetchData();
-  }, []);
+  }, [passableUsername, setPassableUsername]);
 
   return (
     <Grid
@@ -127,7 +136,7 @@ const ViewUserProfile = ({ match }) => {
         bg="white"
         boxShadow="lg"
       >
-       {/* <EditorComponent readOnly={false} /> */}
+      <EditorComponent readOnly={true} username={localStorage.getItem('searchedUser')}/>
     </Box>
 
       {/* Right Block */}
