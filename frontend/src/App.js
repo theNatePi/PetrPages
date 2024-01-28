@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from 'react-router-dom'
+import SignUpPage from './pages/SignUp';
+import App_profile from './pages/App_profile';
+import { ChakraBaseProvider } from '@chakra-ui/react';
+import {useState} from "react";
+import LoginPage from './pages/Login';
+import ViewUserProfile from './pages/ViewUserProfile';
+import "./index.css"
 
-function App() {
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ChakraBaseProvider>
+        <Routes>
+          <Route index element={<SignUpPage />} />
+          <Route path="/SignUp" element={<SignUpPage />} />
+          <Route path="/Profile" element={<App_profile />} />
+          <Route path="/Login" element={<LoginPage />} />
+          <Route path="/ViewProfile" element={<ViewUserProfile />} />
+        </Routes>
+      </ChakraBaseProvider>
     </div>
   );
-}
-
+};
 export default App;
