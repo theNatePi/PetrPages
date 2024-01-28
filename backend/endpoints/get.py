@@ -1,5 +1,5 @@
 from components import school
-from database import get_all_schools, get_all_pages, get_school_from_user, get_data_from_user, get_pages_with_tags, load_page_with_user
+from database import get_music, get_all_schools, get_all_pages, get_school_from_user, get_data_from_user, get_pages_with_tags, load_page_with_user
 from api import app
 import json
 import requests
@@ -108,5 +108,10 @@ def get_user_page(username:str, school_id:int):
         return {json_response}
 
 
-
-
+@app.get("/get_music/")
+def get_user_page(song: str):
+    # get file
+    print(song)
+    result = get_music(song)
+    json_response = json.dumps({"file": result})
+    return json_response

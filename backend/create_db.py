@@ -36,6 +36,12 @@ def create_schools_table():
             "CREATE TABLE schools(id INTEGER PRIMARY KEY UNIQUE NOT NULL, name TEXT UNIQUE NOT NULL, email_domain TEXT NOT NULL)"
         )
         con.commit()
+def create_music_file_table():
+    with sqlite3.connect("db.db") as con:
+        con.execute(
+            "CREATE TABLE music_file(file_name STRING PRIMARY KEY, file BLOB)"
+        )
+        con.commit()
 
 
 def insert_dummy_data():
@@ -72,9 +78,10 @@ def insert_dummy_data():
 
 
 if __name__ == '__main__':
-    create_schools_table()
-    create_users_table()
-    create_pages_table()
-    create_communities_table()
-    create_tags_table()
-    insert_dummy_data()
+    # create_schools_table()
+    # create_users_table()
+    # create_pages_table()
+    # create_communities_table()
+    # create_tags_table()
+    # insert_dummy_data()
+    create_music_file_table()

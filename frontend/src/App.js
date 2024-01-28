@@ -4,8 +4,8 @@ import App_profile from './pages/App_profile';
 import { ChakraBaseProvider } from '@chakra-ui/react';
 import {useState} from "react";
 import LoginPage from './pages/Login';
-import "./index.css"
-
+import MusicUploader from './components/MusicUpload';
+import MusicPlayer from './components/MusicPlayer';
 const App = () => {
   return (
     <div>
@@ -15,6 +15,8 @@ const App = () => {
           <Route path="/SignUp" element={<SignUpPage />} />
           <Route path="/Profile" element={<App_profile />} />
           <Route path="/Login" element={<LoginPage />} />
+          <Route path="/MusicUpload" element={<MusicUploader />} />
+          <Route path="/MusicPlay" element={<MusicPlayer />} />
         </Routes>
       </ChakraBaseProvider>
     </div>

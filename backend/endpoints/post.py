@@ -1,9 +1,15 @@
 from api import app
 import json
 from components import userLogin, newUser, pageData, newBio, newTags, tagsSearch
+<<<<<<< Updated upstream
 from database import get_user, get_email_domain, get_password_from_user, add_new_users, add_page_with_user, set_new_page_with_user, update_bio, update_tags, get_names_with_tags, get_all_users
 
 
+=======
+from database import add_music, get_user, get_email_domain, get_password_from_user, add_new_users, add_page_with_user, set_new_page_with_user, update_bio, update_tags, get_names_with_tags
+from fastapi import  Depends, UploadFile, File
+import base64
+>>>>>>> Stashed changes
 
 @app.post("/login/")
 async def post_login(user_login: userLogin):
@@ -58,3 +64,11 @@ async def post_create_user(user_info: newUser):
     #   if not send back 1
     # all good
     #   send back a 2
+
+@app.post("/add_music/")
+async def post_add_music(file_upload: UploadFile):
+    data = await file_upload.read()
+    add_music(file_upload.filename, data)
+    return {"filename": 1}
+    
+    
