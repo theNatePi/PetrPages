@@ -355,11 +355,7 @@ const UserProfile = ({ user, updateUser }) => {
         bg="white"
         boxShadow="lg"
       >
-        {/* <div style={{fontSize: 50}}>  */}
-          <EditorComponent readOnly={false} /> 
-        {/* </div>  */}
-        
-
+       <EditorComponent readOnly={false} />
     </Box>
 
       {/* Right Block */}
