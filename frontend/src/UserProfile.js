@@ -2,8 +2,8 @@
 
 import React , { useState, useEffect }from 'react';
 import { Box, Heading, Text, VStack, Badge, Divider, Grid , Button, HStack, Input} from '@chakra-ui/react';
-import ImageComponent from './components/ImageComp';
-import { postAPI, getAPI } from './utils/util';
+import ImageComponent from '../components/ImageComp';
+import { postAPI, getAPI } from '../utils/util';
 //import utils from utils;
 
 

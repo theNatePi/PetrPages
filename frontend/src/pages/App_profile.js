@@ -28,18 +28,10 @@ const App = () => {
         
 
         //console.log('Parsed User Data:', userData);
-<<<<<<< HEAD:frontend/src/App_profile.js
         updateUser({
-          name: userData.name,
-          bio: userData.bio,
-          tags: JSON.parse(userData.tags).tags.split(', ')
-=======
-
-        setUser({
           name: userData.name || '',
           bio: userData.bio || '',
           tags: userData.TAGS ? JSON.parse(userData.TAGS).split('\n').map(tag => tag.trim()) : [],
->>>>>>> 63bbb27272530b28ce3bddd0c3464e2e5f41f0e9:frontend/src/pages/App_profile.js
           //tags: userData.tags ? userData.tags.split(',').map(tag => tag.trim()) : [], // Assuming tags is a JSON string
         });
         } catch (error) {
