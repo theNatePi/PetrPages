@@ -70,7 +70,7 @@ const LoginPage = () => {
       >
         <Box p={4}
           w = "400px"
-          h = "8000px"
+          h = "800px"
           borderWidth="1px"
           borderRadius="lg"
           overflow="hidden"
@@ -102,14 +102,14 @@ const LoginPage = () => {
             </FormControl>
           </form>
           <Box textAlign="center">
-            <ChakraLink color="teal.500" href="/login">
+            <ChakraLink color="teal.500" href="/SignUp">
               Create an Account
             </ChakraLink>
           </Box>
         </Box>
         <Box p={4}
           w = "400px"
-          h = "8000px"
+          h = "800px"
           borderRadius="lg"
           overflow="hidden"
           bg="white"

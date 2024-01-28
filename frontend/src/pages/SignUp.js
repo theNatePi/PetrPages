@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect} from 'react';
+import React, { useContext, useState, useEffect, useRef} from 'react';
 import {ChakraProvider, Grid, Alert, Box, Heading, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button, Link as ChakraLink, Select } from '@chakra-ui/react';
 import {getAPI, postAPI} from '../utils/util';
 import { MyContext } from '../components/Context';
-
+import {useNavigate} from 'react-router-dom';
 const SignUpPage = () => {
-  
+  const navigate = useNavigate();
   // Fields for the form
   const formFields = ['username', 'email', 'school_email', 'password', 'school_id'];
   const codeConfig = {
@@ -19,6 +19,8 @@ const SignUpPage = () => {
   // Setter and getter for password visibility
   const [show, setShow] = useState(false);
   const [successCode, setSuccessCode] = useState(-1);
+  const codeRef = useRef({});
+  codeRef.current = successCode;
   const [successVisibility, setSuccessVisibility] = useState(false);
   // Create dictionary for form fields
   const [formData, setFormData] = useState(
@@ -52,7 +54,13 @@ const SignUpPage = () => {
     setSuccessVisibility(true);
     setTimeout(() => {
       setSuccessVisibility(false);
-    }, 5000);
+      console.log(codeRef.current);
+      if (codeRef.current === 2)
+      {
+        console.log("navigate");
+        navigate("/Login");
+      }
+    }, 3000);
   };
 
   // API post to send user sign up info on Submit
@@ -151,7 +159,7 @@ const SignUpPage = () => {
           </form>
           <Box textAlign="center">
             Already have an account?{' '}
-            <ChakraLink color="teal.500" href="/login">
+            <ChakraLink color="teal.500" href="/Login">
               Log in here
             </ChakraLink>
           </Box>

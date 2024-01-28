@@ -3,6 +3,7 @@
 import React , { useState, useEffect }from 'react';
 import { Box, Heading, Text, VStack, Badge, Divider, Grid , Button, HStack, Input} from '@chakra-ui/react';
 import ImageComponent from '../components/ImageComp';
+import TextComponent from '../components/TextComp';
 import { postAPI, getAPI } from '../utils/util';
 //import utils from utils;
 
@@ -21,7 +22,6 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
     // window.onload = () => {
     //   handleLoadLogic();
     // };
-    console.log("user", user);
     if (user.name) {
       handleLoadLogic();
     }
@@ -34,44 +34,61 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
   }, [user]);
 
 
-  const exportPageData = (images) => {
-    let result = JSON.stringify(images);
+  const exportPageData = (elements) => {
+    let result = JSON.stringify(elements);
     return result;
   }
   
   const importPageData = (pageJson) => {
     let pageData = JSON.parse(pageJson);
     console.log(pageData);
-    setImages(pageData);
+    setElements(pageData);
   }
 
-  const [images, setImages] = useState([]);
+  const [elements, setElements] = useState([]);
   const [zIndex, setZIndex] = useState(100);
 
   const spawnImage = () => {
     const newImage = {  
+      type: "image",
       id: Date.now(),
       zIndex: zIndex,
-      rotation: 90,
-      x_pos: 150,
-      y_pos: 150,
+      rotation: 0,
+      x_pos: 50,
+      y_pos: 50,
       width: 150,
       height: 150,
       imageURL: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.treehugger.com%2Fthmb%2F3TkFQq0-PZH3FCmFsl-aZ2nW3Bc%3D%2F4086x2724%2Ffilters%3Ano_upscale()%3Amax_bytes(150000)%3Astrip_icc()%2Fgiant-anteater--myrmecophaga-tridactyla-532346712-a32c4e8bbd80451da0382b8c704df1b6.jpg&f=1&nofb=1&ipt=8913269515359809a4fd1533cc66c7f97debd293c087e6edac26a7217070165c&ipo=images"
     };
-    setImages((prevImages) => [...prevImages, newImage]);
+    setElements((prevImages) => [...prevImages, newImage]);
+    setZIndex((prevZIndex) => prevZIndex - 1);
+  };
+
+  const spawnText = () => {
+    const newText = { 
+      type: "text", 
+      id: Date.now(),
+      zIndex: zIndex,
+      rotation: 0,
+      x_pos: 50,
+      y_pos: 50,
+      width: 150,
+      height: 150,
+      content: "Double Click To Edit"
+    };
+    setElements((prevElements) => [...prevElements, newText]);
     setZIndex((prevZIndex) => prevZIndex - 1);
   };
 
   const moveImage = (id, {x, y}) => {
-    setImages((prevImages) =>
+    setElements((prevImages) =>
       prevImages.map((image) => (image.id === id ? { ...image, x_pos : parseInt(x, 10), y_pos : parseInt(y, 10) } : image))
     );
   };
 
   const rotateImage = (id, rotation) => {
     rotation = parseInt(rotation.rotation, 10);
-    setImages((prevImages) =>
+    setElements((prevImages) =>
       prevImages.map((image) => (image.id === id ? { ...image, rotation: parseInt(rotation, 10) } : image))
     );
   };
@@ -79,7 +96,7 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
   const changeURL = (id, imageURL) => {
     console.log(imageURL);
     imageURL = imageURL.url;
-    setImages((prevImages) =>
+    setElements((prevImages) =>
       prevImages.map((image) => (image.id === id ? { ...image, imageURL } : image))
     );
   };
@@ -87,13 +104,13 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
   const changeSize = (id, {height, width}) => {
     height = parseInt(height, 10);
     width = parseInt(width, 10);
-    setImages((prevImages) =>
+    setElements((prevImages) =>
       prevImages.map((image) => (image.id === id ? { ...image, height : height, width : width } : image))
     );
   };
 
   const deleteImage = (id) => {
-    setImages((prevImages) => prevImages.filter((image) => image.id !== id));
+    setElements((prevImages) => prevImages.filter((image) => image.id !== id));
   };
 
   const handleDoubleTap = (imageId) => {
@@ -107,7 +124,7 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
   };
 
   const handleSaveLogic = async () => {
-    const pageData = exportPageData(images);
+    const pageData = exportPageData(elements);
     try {
       const pageDataExport = {
         "username": user.name,
@@ -146,6 +163,12 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
   const handleToggleEdit = () => {
     setIsEditing((prev) => !prev);
   };
+  const handleSaveClick = async () => {
+    // Trim leading and trailing spaces from editedBio
+    const trimmedBio = editedBio.trim();
+
+    // Update user with updated bio
+    updateUser({ ...user, bio: trimmedBio });
   const handleSaveClick = async () => {
     // Trim leading and trailing spaces from editedBio
     const trimmedBio = editedBio.trim();
@@ -313,7 +336,7 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
           <Button size="sm" colorScheme="teal" onClick={spawnImage}>
             Add Image
           </Button>
-          <Button size="sm" colorScheme="teal" onClick={handleSaveTagsClick}>
+          <Button size="sm" colorScheme="teal" onClick={spawnText}>
             Add Text
           </Button>
           <Button size="sm" colorScheme="teal" onClick={handleSaveTagsClick}>
@@ -340,22 +363,42 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
         boxShadow="lg"
       >
         <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-          {images.map((image) => (
-            <div key={image.id}>
-              <ImageComponent id={image.id} 
-              m_zIndex={image.zIndex}
-              m_rotation={image.rotation}
-              m_x={image.x_pos}
-              m_y={image.y_pos}
-              m_width={image.width}
-              m_height={image.height}
-              m_imageURL={image.imageURL}
-              onMoveUpdate={(x, y) => moveImage(image.id, { x, y })}
-              onRotate={(rotation) => rotateImage(image.id, {rotation})}
-              onChangeURL={(url) => changeURL(image.id, {url})}
-              onChangeSize={(height, width) => changeSize(image.id, { height, width })}
-              onDoubleTap={() => handleDoubleTap(image.id)}/>
+          {elements.map((item) => (
+            item.type === "image" ? (
+            <div key={item.id}>
+              <ImageComponent id={item.id} 
+              m_zIndex={item.zIndex}
+              m_rotation={item.rotation}
+              m_x={item.x_pos}
+              m_y={item.y_pos}
+              m_width={item.width}
+              m_height={item.height}
+              m_imageURL={item.imageURL}
+              onMoveUpdate={(x, y) => moveImage(item.id, { x, y })}
+              onRotate={(rotation) => rotateImage(item.id, {rotation})}
+              onChangeURL={(url) => changeURL(item.id, {url})}
+              onChangeSize={(height, width) => changeSize(item.id, { height, width })}
+              onDoubleTap={() => handleDoubleTap(item.id)}/>
             </div>
+          ) : item.type === "text" ? (
+            <div key={item.id}>
+              <TextComponent
+                m_zIndex={item.zIndex}
+                m_rotation={item.rotation}
+                m_x={item.x_pos}
+                m_y={item.y_pos}
+                m_width={item.width}
+                m_height={item.height}
+                m_imageURL={item.imageURL}
+                onMoveUpdate={(x, y) => moveImage(item.id, { x, y })}
+                onRotate={(rotation) => rotateImage(item.id, {rotation})}
+                onChangeURL={(url) => changeURL(item.id, {url})}
+                onChangeSize={(height, width) => changeSize(item.id, { height, width })}
+                onDoubleTap={() => handleDoubleTap(item.id)}/>
+            </div>
+          ) : (
+            <Text></Text>
+          )
           ))}
         </div>
         
