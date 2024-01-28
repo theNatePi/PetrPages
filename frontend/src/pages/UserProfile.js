@@ -2,6 +2,8 @@
 
 import React , { useState }from 'react';
 import { Box, Heading, Text, VStack, Badge, Divider, Grid , Button, HStack, Input} from '@chakra-ui/react';
+import {postAPI} from '../utils/util';
+
 //import utils from utils;
 
 const UserProfile = ({ user, updateUser }) => {
@@ -19,13 +21,22 @@ const UserProfile = ({ user, updateUser }) => {
   const handleToggleEdit = () => {
     setIsEditing((prev) => !prev);
   };
-  const handleSaveClick = () => {
-    // Implement your logic to save the edited bio
-    // For now, let's just log the edited bio
-    console.log('Saving bio:', editedBio);
-    updateUser({ ...user, bio: editedBio });
+  const handleSaveClick = async () => {
+    // Trim leading and trailing spaces from editedBio
+    const trimmedBio = editedBio.trim();
 
+    // Update user with updated bio
+    updateUser({ ...user, bio: trimmedBio });
 
+    // Make an API request to update user bio
+    try {
+      await postAPI('/update-bio', { name:user.name, bio: trimmedBio }); // Replace 'id' and '/update-bio' with your actual identifier and API path
+      console.log('User bio updated successfully!');
+    } catch (error) {
+      console.error('Error updating user bio:', error);
+    }
+
+    // Set isEditing to false
     setIsEditing(false);
   };
   
