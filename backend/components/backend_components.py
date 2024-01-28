@@ -32,4 +32,9 @@ class school(BaseModel):
     name: str
     email: str
 
+<<<<<<< Updated upstream
 
+=======
+class song(BaseModel):
+    name: str
+>>>>>>> Stashed changes
