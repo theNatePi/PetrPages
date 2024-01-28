@@ -7,6 +7,7 @@ import {getAPI} from '../utils/util';
 import { MyContext } from '../components/Context';
 const App = () => {
 
+  const {userInfo, setUserInfo } = useContext(MyContext);
   const [user, setUser] = useState({
     name: '',
     bio: '',
@@ -20,7 +21,8 @@ const App = () => {
   useEffect(() =>  {
     const fetchData = async () => {
       try {
-        const apiResponse = await getAPI('/page/?username=petr&school_id=1'); // Replace 'user-profile' with your actual API endpoint
+        const apiResponse = await getAPI(`/get_page?username=${userInfo.username}`); // Replace 'user-profile' with your actual API endpoint
+        console.log(apiResponse);
         const userData = apiResponse[0]
         console.log(userData);
 
@@ -36,9 +38,10 @@ const App = () => {
         });
         } catch (error) {
         console.error('Error fetching user data:', error);
+        throw error;
       }
     };
-    fetchData();
+    fetchData()
   }, []); // Empty dependency array to ensure the effect runs only once on mount
 
   return (
