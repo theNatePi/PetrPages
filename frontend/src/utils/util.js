@@ -8,6 +8,7 @@ const Backend = axios.create({
 
 const getAPI = async (path) => {
     const response = await Backend.get(path);
+    console.log(response);
     return JSON.parse(response.data);
 };
 // Example:

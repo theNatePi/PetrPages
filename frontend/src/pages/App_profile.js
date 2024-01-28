@@ -1,12 +1,12 @@
 // App.js
 
-import React, { useContext, useState , useEffect} from 'react';
+import React, {useState , useEffect} from 'react';
 import { ChakraProvider, CSSReset, ColorModeProvider, Flex, Center } from '@chakra-ui/react';
 import UserProfile from './UserProfile';
 import {getAPI} from '../utils/util';
-import { MyContext } from '../components/Context';
 const App = () => {
-
+  const [userInfo, setUserInfo] = useState({});
+  const formFields = ['username', 'password'];
   const [user, setUser] = useState({
     name: '',
     bio: '',
@@ -20,7 +20,9 @@ const App = () => {
   useEffect(() =>  {
     const fetchData = async () => {
       try {
-        const apiResponse = await getAPI('/page/?username=petr&school_id=1'); // Replace 'user-profile' with your actual API endpoint
+        console.log(localStorage.getItem('username'));
+        const apiResponse = await getAPI(`/get_page?username=${localStorage.getItem('username')}`); // Replace 'user-profile' with your actual API endpoint
+        console.log(apiResponse);
         const userData = apiResponse[0]
         console.log(userData);
 
@@ -31,14 +33,15 @@ const App = () => {
         updateUser({
           name: userData.name || '',
           bio: userData.bio || '',
-          tags: userData.TAGS ? JSON.parse(userData.TAGS).split('\n').map(tag => tag.trim()) : [],
+          tags: JSON.parse(userData.tags).tags.split(',').map(tag => tag.trim())
           //tags: userData.tags ? userData.tags.split(',').map(tag => tag.trim()) : [], // Assuming tags is a JSON string
         });
         } catch (error) {
         console.error('Error fetching user data:', error);
+        throw error;
       }
     };
-    fetchData();
+    fetchData()
   }, []); // Empty dependency array to ensure the effect runs only once on mount
 
   return (
