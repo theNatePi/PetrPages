@@ -5,14 +5,12 @@ from components import userLogin, newUser
 app = FastAPI()
 
 # Configure CORS
-origins = [
-    "http://localhost:3000",  # Assuming your frontend is running on this port
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
