@@ -1,20 +1,25 @@
-import React, { useState, useEffect} from 'react';
+import React, { useRef, useState, useContext, useEffect} from 'react';
 import {ChakraProvider, Grid, Alert, Box, Heading, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button, Link as ChakraLink, Select } from '@chakra-ui/react';
 import {getAPI, postAPI} from '../utils/util';
-
-
+import {useNavigate} from 'react-router-dom';
+import { MyContext } from '../components/Context';
 const LoginPage = () => {
+  const {userInfo, setUserInfo } = useContext(MyContext);
   // Fields for the form
+  
+  const navigate = useNavigate();
   const formFields = ['username', 'password'];
+  // 0 = success
+  // 1 = fail
   const codeConfig = {
-    "-1": "Failed Sign Up!",
-    "0": "Username is taken!",
-    "1": "Invalid school email!",
-    "2": "Successful Sign Up!"
+    "0": "Login Successful!",
+    "1": "Invalid Login!",
   };
   // Setter and getter for password visibility
   const [show, setShow] = useState(false);
   const [successCode, setSuccessCode] = useState(-1);
+  const codeRef = useRef({});
+  codeRef.current = successCode;
   const [successVisibility, setSuccessVisibility] = useState(false);
   // Create dictionary for form fields
   const [formData, setFormData] = useState(
@@ -46,6 +51,12 @@ const LoginPage = () => {
     setSuccessVisibility(true);
     setTimeout(() => {
       setSuccessVisibility(false);
+      if (codeRef.current === 0)
+      {
+        console.log("navigate");
+        setUserInfo({"username": formData["username"]});
+        navigate("/Profile");
+      }
     }, 5000);
   };
 
@@ -62,7 +73,7 @@ const LoginPage = () => {
 
   return (
     <ChakraProvider>
-      {successVisibility && (<Alert justifyContent='center' textAlign='center' status={(successCode === 2) ? "success" : "error"} variant='subtle'>{codeConfig[successCode.toString()]}</Alert>)}
+      {successVisibility && (<Alert justifyContent='center' textAlign='center' status={(successCode === 0) ? "success" : "error"} variant='subtle'>{codeConfig[successCode.toString()]}</Alert>)}
       <Grid
         templateColumns="1fr 2fr 1fr" // Three columns with the middle column being twice the width of the side columns
         gap={6} // Gap between columns
