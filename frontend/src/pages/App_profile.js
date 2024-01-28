@@ -1,13 +1,12 @@
 // App.js
 
-import React, {useContext, useState , useEffect} from 'react';
+import React, {useState , useEffect} from 'react';
 import { ChakraProvider, CSSReset, ColorModeProvider, Flex, Center } from '@chakra-ui/react';
 import UserProfile from './UserProfile';
 import {getAPI} from '../utils/util';
-import { MyContext } from '../components/Context';
 const App = () => {
-
-  const {userInfo, setUserInfo } = useContext(MyContext);
+  const [userInfo, setUserInfo] = useState({});
+  const formFields = ['username', 'password'];
   const [user, setUser] = useState({
     name: '',
     bio: '',
@@ -21,7 +20,8 @@ const App = () => {
   useEffect(() =>  {
     const fetchData = async () => {
       try {
-        const apiResponse = await getAPI(`/get_page?username=${userInfo.username}`); // Replace 'user-profile' with your actual API endpoint
+        console.log(localStorage.getItem('username'));
+        const apiResponse = await getAPI(`/get_page?username=${localStorage.getItem('username')}`); // Replace 'user-profile' with your actual API endpoint
         console.log(apiResponse);
         const userData = apiResponse[0]
         console.log(userData);

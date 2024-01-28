@@ -1,7 +1,6 @@
-import React, { useContext, useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import {ChakraProvider, Grid, Alert, Box, Heading, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button, Link as ChakraLink, Select } from '@chakra-ui/react';
 import {getAPI, postAPI} from '../utils/util';
-import { MyContext } from '../components/Context';
 import {useNavigate} from 'react-router-dom';
 const SignUpPage = () => {
   const navigate = useNavigate();

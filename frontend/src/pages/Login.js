@@ -1,12 +1,11 @@
-import React, { useRef, useState, useContext, useEffect} from 'react';
+import React, { useRef, useState } from 'react';
 import {ChakraProvider, Grid, Alert, Box, Heading, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button, Link as ChakraLink, Select } from '@chakra-ui/react';
 import {getAPI, postAPI} from '../utils/util';
 import {useNavigate} from 'react-router-dom';
-import { MyContext } from '../components/Context';
 const LoginPage = () => {
-  const {userInfo, setUserInfo } = useContext(MyContext);
   // Fields for the form
-  
+  const [userInfo, setUserInfo] = useState({});
+
   const navigate = useNavigate();
   const formFields = ['username', 'password'];
   // 0 = success
@@ -54,10 +53,10 @@ const LoginPage = () => {
       if (codeRef.current === 0)
       {
         console.log("navigate");
-        setUserInfo({"username": formData["username"]});
+        localStorage.setItem('username', formData["username"]);
         navigate("/Profile");
       }
-    }, 5000);
+    }, 3000);
   };
 
   // API post to send user sign up info on Submit
