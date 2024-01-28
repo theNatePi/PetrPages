@@ -162,13 +162,8 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
   };
   const handleToggleEdit = () => {
     setIsEditing((prev) => !prev);
-  };
-  const handleSaveClick = async () => {
-    // Trim leading and trailing spaces from editedBio
-    const trimmedBio = editedBio.trim();
-
-    // Update user with updated bio
-    updateUser({ ...user, bio: trimmedBio });
+  }
+ 
   const handleSaveClick = async () => {
     // Trim leading and trailing spaces from editedBio
     const trimmedBio = editedBio.trim();
@@ -207,14 +202,8 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
           "username": user.name,
           "tags": updatedTagsString,
         });
-        // if (!response.ok) {
-        //   throw new Error('Failed to update tags');
-        // }
-
-        // Update the local state
       }
 
-      // Close the tags editing mode
 
     } catch (error) {
       console.error('Error updating tags:', error);
@@ -223,6 +212,7 @@ const UserProfile = ({ user, updateUser, onSearch }) => {
       setIsEditingTags(false)
     }
   };
+
 
   
   return (

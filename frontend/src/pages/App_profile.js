@@ -1,9 +1,10 @@
 // App.js
 
-import React, {useState , useEffect} from 'react';
+import React, {useContext, useState , useEffect} from 'react';
 import { ChakraProvider, CSSReset, ColorModeProvider, Flex, Center } from '@chakra-ui/react';
 import UserProfile from './UserProfile';
 import {getAPI} from '../utils/util';
+import { MyContext } from '../components/Context';
 const App = () => {
 
   const {userInfo, setUserInfo } = useContext(MyContext);
