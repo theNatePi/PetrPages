@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect} from 'react';
+import React, { useContext, useState, useEffect, useRef} from 'react';
 import {ChakraProvider, Grid, Alert, Box, Heading, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button, Link as ChakraLink, Select } from '@chakra-ui/react';
 import {getAPI, postAPI} from '../utils/util';
 import { MyContext } from '../components/Context';
@@ -19,6 +19,8 @@ const SignUpPage = () => {
   // Setter and getter for password visibility
   const [show, setShow] = useState(false);
   const [successCode, setSuccessCode] = useState(-1);
+  const codeRef = useRef({});
+  codeRef.current = successCode;
   const [successVisibility, setSuccessVisibility] = useState(false);
   // Create dictionary for form fields
   const [formData, setFormData] = useState(
@@ -52,9 +54,10 @@ const SignUpPage = () => {
     setSuccessVisibility(true);
     setTimeout(() => {
       setSuccessVisibility(false);
-      console.log(successCode);
-      if (successCode === 2)
+      console.log(codeRef.current);
+      if (codeRef.current === 2)
       {
+        console.log("navigate");
         navigate("/Login");
       }
     }, 3000);
