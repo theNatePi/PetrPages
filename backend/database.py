@@ -1,6 +1,6 @@
+
 import sqlite3
 import json
-
 def get_all_schools():
     with sqlite3.connect("db.db") as con:
         result = con.execute("""SELECT * FROM schools""")
@@ -13,8 +13,11 @@ def get_all_tags():
 
 def get_all_users():
     with sqlite3.connect("db.db") as con:
-        result = con.execute("""SELECT * FROM users""")
-    return result.fetchall()
+        final_result = set()
+        result = con.execute("""SELECT username FROM users""")
+        for name in result.fetchall():
+            final_result.add(name[0])
+    return final_result
 
 def get_user(username):
     with sqlite3.connect("db.db") as con:
@@ -80,9 +83,10 @@ def add_new_users(username, password, email, school_email, school_id):
         
 def set_new_page_with_user(username, school_id):
     tags = json.dumps({'tags': ''})
+    page_data =json.dumps(default_page)
     with sqlite3.connect("db.db") as con:
-        result = con.execute("""INSERT INTO pages (page_data, username, bio, tag_ids, community_ids, likes, school_id) VALUES ('', ?,'', ?, '', '', ?)""", 
-                             (username, tags, school_id))
+        result = con.execute("""INSERT INTO pages (page_data, username, bio, tag_ids, community_ids, likes, school_id) VALUES (?, ?,'', ?, '', '', ?)""", 
+                             (page_data, username, tags, school_id))
     
 def add_page_with_user(username, page_data):
     with sqlite3.connect("db.db") as con:
@@ -105,8 +109,10 @@ def get_names_with_tags(tags):
     final_result = set()
     with sqlite3.connect("db.db") as con:
         for tags in tags.split(','):
-            json_tag = json.dumps({'tags':tags})
-            result = con.execute("""SELECT username FROM pages WHERE tag_ids LIKE ?""", (json_tag, ))
+            tags = '%' + tags + '%'
+            #json_tag = json.dumps({'tatags})
+            result = con.execute("""SELECT username FROM pages WHERE tag_ids LIKE ?""", (tags, ))
+            #print(result.fetchall())
             for i in result.fetchall():
                 final_result.add(i[0])
     return final_result
@@ -120,6 +126,104 @@ def delete_rows():
         result = con.execute("""DELETE FROM pages WHERE username = 'Kyle'""")
         result = con.execute("""DELETE FROM users WHERE username = 'Nick' """)
 
+default_page = {
+  "time": 1706427406946,
+  "blocks": [
+      {
+          "id": "UDxZPHInku",
+          "type": "header",
+          "data": {
+              "text": "Welcome",
+              "level": 1
+          }
+      },
+      {
+          "id": "SC1DCdAfX-",
+          "type": "header",
+          "data": {
+              "text": "to your home on the internet!",
+              "level": 4
+          }
+      },
+      {
+          "id": "X8eCxOi0OU",
+          "type": "image",
+          "data": {
+              "url": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.giphy.com%2Fmedia%2FoF46gZeO37KmY%2Fgiphy.gif&f=1&nofb=1&ipt=85ff568093670a86a7b78453e8dca49846913f225119dd9f539a7905bfde5af4&ipo=images.jpg",
+              "caption": "heyo~ - petr",
+              "withBorder": True,
+              "withBackground": True,
+              "stretched": True
+          }
+      },
+      {
+          "id": "yhp9wECeTy",
+          "type": "header",
+          "data": {
+              "text": "You can add:",
+              "level": 2
+          }
+      },
+      {
+          "id": "emXPVMr8g_",
+          "type": "header",
+          "data": {
+              "text": "lists",
+              "level": 4
+          }
+      },
+      {
+          "id": "UiIwGQ3OVd",
+          "type": "list",
+          "data": {
+              "style": "unordered",
+              "items": [
+                  "one",
+                  "two",
+                  "three"
+              ]
+          }
+      },
+      {
+          "id": "BdPXJ_AYdC",
+          "type": "header",
+          "data": {
+              "text": "headers and text",
+              "level": 4
+          }
+      },
+      {
+          "id": "q1aMOGB5jy",
+          "type": "paragraph",
+          "data": {
+              "text": "Rem eos velit excepturi nostrum voluptatibus libero. Enim veniam alias delectus. Consequatur exercitationem omnis ut."
+          }
+      },
+      {
+          "id": "dIgJCU_wOD",
+          "type": "paragraph",
+          "data": {
+              "text": "Amet qui pariatur a. Id est reiciendis consequatur aut libero. Aut est veniam labore et quis sit quia sunt. Velit quia qui id veritatis quia sint dolorum cumque. Temporibus officia ea ex laborum et in iure. Qui velit earum at tempore deserunt."
+          }
+      },
+      {
+          "id": "zEvsGUITRW",
+          "type": "header",
+          "data": {
+              "text": "and code blocks",
+              "level": 4
+          }
+      },
+      {
+          "id": "Ap7DJ8DAwb",
+          "type": "raw",
+          "data": {
+              "html": "AntEater by Win Kang\n\n    Z   z                            //////////////_               the\n           Z   O         __\\\\\\\\@   //^^        _-    \\///////    sleeping\n    Z    z   o   _____((_     \\-/ ____/ /   {   { \\\\       }     ant\n           o    0__________\\\\\\---//____/----//__|-^\\\\\\\\\\\\\\\\     eater"
+          }
+      }
+  ],
+  "version": "2.29.0"
+}
 if __name__ == "__main__":
-    print(get_names_with_tags("League of Legends,Fortnite,Valorant"))
+    print(get_all_users())
 

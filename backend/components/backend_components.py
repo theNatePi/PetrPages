@@ -31,3 +31,5 @@ class school(BaseModel):
     school_id: int
     name: str
     email: str
+
+

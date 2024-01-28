@@ -44,30 +44,30 @@ def insert_dummy_data():
         con.execute(
             "INSERT INTO schools (name, email_domain) VALUES ('UCI', 'uci.edu')"
         )
-        con.execute(
-            """
-            INSERT INTO users (username, password, email, school_email, school_id)
-            VALUES ('petr', 'petrpass', 'petr@gmail.com', 'petr@uci.edu', 1)
-            """
-        )
-        con.execute(
-            """
-            INSERT INTO pages (page_data, username, bio, tag_ids, community_ids, likes, school_id)
-            VALUES ('{pagejson}', 'petr', 'hey, im petr!', ? , '{communitiesjson}', '{likesjson}', 1) 
-            """ , (tags_json, )
-        )
-        con.execute(
-            """
-            INSERT INTO communities (text, page_ids, school_id)
-            VALUES ('valorantcommunity', '{pageidjson}', 1)
-            """
-        )
-        con.execute(
-            """
-            INSERT INTO tags (text, page_ids, school_id)
-            VALUES ('valoranttag', '{pageidjson}', 1)
-            """
-        )
+        # con.execute(
+        #     """
+        #     INSERT INTO users (username, password, email, school_email, school_id)
+        #     VALUES ('petr', 'petrpass', 'petr@gmail.com', 'petr@uci.edu', 1)
+        #     """
+        # )
+        # con.execute(
+        #     """
+        #     INSERT INTO pages (page_data, username, bio, tag_ids, community_ids, likes, school_id)
+        #     VALUES ('{pagejson}', 'petr', 'hey, im petr!', ? , '{communitiesjson}', '{likesjson}', 1) 
+        #     """ , (tags_json, )
+        # )
+        # con.execute(
+        #     """
+        #     INSERT INTO communities (text, page_ids, school_id)
+        #     VALUES ('valorantcommunity', '{pageidjson}', 1)
+        #     """
+        # )
+        # con.execute(
+        #     """
+        #     INSERT INTO tags (text, page_ids, school_id)
+        #     VALUES ('valoranttag', '{pageidjson}', 1)
+        #     """
+        # )
         con.commit()
 
 

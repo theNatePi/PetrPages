@@ -1,7 +1,7 @@
 from api import app
 import json
 from components import userLogin, newUser, pageData, newBio, newTags, tagsSearch
-from database import get_user, get_email_domain, get_password_from_user, add_new_users, add_page_with_user, set_new_page_with_user, update_bio, update_tags, get_names_with_tags
+from database import get_user, get_email_domain, get_password_from_user, add_new_users, add_page_with_user, set_new_page_with_user, update_bio, update_tags, get_names_with_tags, get_all_users
 
 
 
@@ -31,6 +31,10 @@ async def post_search_results(search_tags: tagsSearch):
     results = ','.join(list(results))
     json_result = json.dumps({"username": results})
     return {json_result}
+@app.post("/get_all_users/")
+async def post_all_users():
+    results = get_all_users()
+    return {results}
     
 
 

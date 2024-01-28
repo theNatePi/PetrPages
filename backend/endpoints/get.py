@@ -65,8 +65,7 @@ def get_pages(tag_name: str, school_id: int):
 @app.get("/load_page/")
 def load_page(username: str):
     result = load_page_with_user(username)
-    
-    return {result[0]}
+    return {result[0][0]}
 
 @app.get("/get_page/")
 def get_page(username:str):
@@ -107,7 +106,6 @@ def get_user_page(username:str, school_id:int):
             return_data.append(page_data)
         json_response = json.dumps(return_data)
         return {json_response}
-    # bio, tags, page content, communities, likes
 
 
 
