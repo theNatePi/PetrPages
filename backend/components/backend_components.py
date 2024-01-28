@@ -12,6 +12,9 @@ class newTags(BaseModel):
     username: str
     tags: str
 
+class tagsSearch(BaseModel):
+    tags: str
+
 class newUser(BaseModel):
     username: str
     email: str

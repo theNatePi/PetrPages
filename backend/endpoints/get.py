@@ -64,7 +64,6 @@ def get_pages(tag_name: str, school_id: int):
 
 @app.get("/load_page/")
 def load_page(username: str):
-    print(username)
     result = load_page_with_user(username)
     
     return {result[0]}
