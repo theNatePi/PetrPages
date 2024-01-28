@@ -15,7 +15,7 @@ const App = () => {
         <ChakraBaseProvider>
           <Routes>
             <Route index element={<SignUpPage />} />
-            <Route path="/Sign_Up" element={<SignUpPage />} />
+            <Route path="/SignUp" element={<SignUpPage />} />
             <Route path="/Profile" element={<App_profile />} />
             <Route path="/Login" element={<LoginPage />} />
           </Routes>

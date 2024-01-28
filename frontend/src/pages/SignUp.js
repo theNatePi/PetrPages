@@ -2,9 +2,9 @@ import React, { useContext, useState, useEffect} from 'react';
 import {ChakraProvider, Grid, Alert, Box, Heading, FormControl, FormLabel, Input, InputGroup, InputRightElement, Button, Link as ChakraLink, Select } from '@chakra-ui/react';
 import {getAPI, postAPI} from '../utils/util';
 import { MyContext } from '../components/Context';
-
+import {useNavigate} from 'react-router-dom';
 const SignUpPage = () => {
-  
+  const navigate = useNavigate();
   // Fields for the form
   const formFields = ['username', 'email', 'school_email', 'password', 'school_id'];
   const codeConfig = {
@@ -52,7 +52,12 @@ const SignUpPage = () => {
     setSuccessVisibility(true);
     setTimeout(() => {
       setSuccessVisibility(false);
-    }, 5000);
+      console.log(successCode);
+      if (successCode === 2)
+      {
+        navigate("/Login");
+      }
+    }, 3000);
   };
 
   // API post to send user sign up info on Submit
@@ -151,7 +156,7 @@ const SignUpPage = () => {
           </form>
           <Box textAlign="center">
             Already have an account?{' '}
-            <ChakraLink color="teal.500" href="/login">
+            <ChakraLink color="teal.500" href="/Login">
               Log in here
             </ChakraLink>
           </Box>
