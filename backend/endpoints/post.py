@@ -2,6 +2,27 @@ from api import app
 import json
 from components import userLogin, newUser, pageData, newBio, newTags, tagsSearch
 from database import get_user, get_email_domain, get_password_from_user, add_new_users, add_page_with_user, set_new_page_with_user, update_bio, update_tags, get_names_with_tags, get_all_users
+import requests
+
+url = "https://globalemail.melissadata.net/v4/WEB/GlobalEmail/doGlobalEmail"
+
+
+def check_email(email):
+    params = {
+        'id': "gxEnKiQsOnDEki3tgvSky_**nSAcwXpxhQ0PC2lXxuDAZ-**",
+        'opt': "VerifyMailBox:Premium,DomainCorrection:off,WhoIs:on",
+        'format': "json",
+        'email': f"{email}"
+    }
+    response = requests.get(url, params=params)
+    if response.status_code == 200:
+        result_dict = response.json()
+        print(result_dict)
+        score = int(result_dict["Records"][0]["DeliverabilityConfidenceScore"])
+        return score > 20
+    else:
+        return False
+
 
 
 
@@ -31,10 +52,13 @@ async def post_search_results(search_tags: tagsSearch):
     results = ','.join(list(results))
     json_result = json.dumps({"username": results})
     return {json_result}
+
 @app.post("/get_all_users/")
 async def post_all_users():
     results = get_all_users()
-    return {results}
+    results = ','.join(list(results))
+    json_result = json.dumps({"username": results})
+    return {json_result}
     
 
 
@@ -47,9 +71,12 @@ async def post_create_user(user_info: newUser):
     elif not user_info.school_email.__contains__(domain_result[0][0]):
         return {1}
     else:
-        add_new_users(user_info.username, user_info.password, user_info.email, user_info.school_email, user_info.school_id)
-        set_new_page_with_user(user_info.username, user_info.school_id)
-        return {2}
+        if check_email(user_info.school_email):
+            add_new_users(user_info.username, user_info.password, user_info.email, user_info.school_email, user_info.school_id)
+            set_new_page_with_user(user_info.username, user_info.school_id)
+            return {2}
+        else:
+            return {1}
 
     # turn it from json to dict
     # verify that username is avail

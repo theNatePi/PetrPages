@@ -225,5 +225,5 @@ default_page = {
   "version": "2.29.0"
 }
 if __name__ == "__main__":
-    print(get_all_users())
+    print(get_names_with_tags("petr"))
 

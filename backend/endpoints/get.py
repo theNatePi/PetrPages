@@ -5,28 +5,13 @@ import json
 import requests
 
 
-#url = "https://globalemail.melissadata.net/v4/WEB/GlobalEmail/doGlobalEmail"
+url = "https://globalemail.melissadata.net/v4/WEB/GlobalEmail/doGlobalEmail"
 
 
 
-# # Make a GET request using the requests library
-# response = requests.get(url, params=params)
+# Make a GET request using the requests library
 
-# def check_email(email):
-#     params = {
-#         'id': "gxEnKiQsOnDEki3tgvSky_**nSAcwXpxhQ0PC2lXxuDAZ-**",
-#         'opt': "VerifyMailBox:Premium,DomainCorrection:off,WhoIs:on",
-#         'format': "json",
-#         'email': f"{email}"
-#     }
-#     response = requests.get(url, params=params)
-#     if response.status_code == 200:
-#         result = response.json()
-#         result_dict = json.loads(result)
-#         score = int(result_dict["Records"]["DeliverabilityConfidenceScore"])
-#         return score > 30
-#     else:
-#         return False
+
 
 @app.get("/schools/")
 def get_schools():
