@@ -136,7 +136,7 @@ const ImageComponent = ({m_id, m_zIndex, m_rotation, m_x, m_y, m_width, m_height
   return (
     <img ref={thisRef}
     src={currentImage} width={mainWidth} height={mainHeight} 
-    style={{transform: translateString, position: "absolute"}}
+    style={{transform: translateString}}
     ></img>
     );
 };
