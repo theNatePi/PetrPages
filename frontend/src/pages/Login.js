@@ -3,12 +3,15 @@ import {ChakraProvider, Grid, Alert, Box, Heading, FormControl, FormLabel, Input
 import {getAPI, postAPI} from '../utils/util';
 
 
-const SignUpPage = () => {
+const LoginPage = () => {
   // Fields for the form
   const formFields = ['username', 'password'];
-  // stters and getters for school
-  const [schools, setSchools] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const codeConfig = {
+    "-1": "Failed Sign Up!",
+    "0": "Username is taken!",
+    "1": "Invalid school email!",
+    "2": "Successful Sign Up!"
+  };
   // Setter and getter for password visibility
   const [show, setShow] = useState(false);
   const [successCode, setSuccessCode] = useState(-1);
@@ -39,8 +42,6 @@ const SignUpPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted with data:', formData);
-    // Add your signup logic here
-    formData["school_id"] = parseInt(formData["school_id"]);
     postUserInfo();
     setSuccessVisibility(true);
     setTimeout(() => {
@@ -53,25 +54,11 @@ const SignUpPage = () => {
   {
     try {
       const userData = Object.fromEntries(Object.keys(formData).map((key) => [key, formData[key]]));
-      const response = await postAPI("/create_user/", userData);
+      const response = await postAPI("/login/", userData);
       setSuccessCode(response);
     } catch (err) {
       console.log(err);
     }}
-
-  // API call to load colleges  
-  useEffect(() => async () => {
-    try {
-      const response = await getAPI("/schools/");
-      console.log(response);
-      setSchools(response);
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-      setLoading(true);
-    }}
-  , []);
-
 
   return (
     <ChakraProvider>
@@ -92,20 +79,12 @@ const SignUpPage = () => {
         </Box>
         <Box p={4} maxW="400px" mx="auto">
           <Heading as="h2" mb={6} textAlign="center">
-            Sign Up
+            Login
           </Heading>
           <form onSubmit={handleSubmit}>
             <FormControl mb={4}>
               <FormLabel>Username</FormLabel>
               <Input name="username" value={formData.username} onChange={handleInputChange} />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>Email</FormLabel>
-              <Input name="email" value={formData.email} onChange={handleInputChange} />
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>School Email</FormLabel>
-              <Input name="school_email" value={formData.school_email} onChange={handleInputChange} />
             </FormControl>
             <FormControl mb={4}>
               <FormLabel>Password</FormLabel>
@@ -117,35 +96,14 @@ const SignUpPage = () => {
                   </Button>
                 </InputRightElement>
               </InputGroup>
-            </FormControl>
-            <FormControl mb={4}>
-              <FormLabel>School</FormLabel>
-              <Select
-                placeholder="Select your school"
-                name="school_id"
-                value={formData.school_id}
-                onChange={handleInputChange}
-                maxH="80px"
-              >
-                {loading ? (
-                  <option>Failed to load schools...</option>
-                ) : (
-                  Object.values(schools).map((college) => (
-                    <option key={college.name} value={college.id}>
-                      {college.name}
-                    </option>
-                  ))
-                )}
-              </Select>
-            </FormControl>
             <Button type="submit" colorScheme="teal" mb={4} width="100%">
-              Sign Up
+              Login In
             </Button>
+            </FormControl>
           </form>
           <Box textAlign="center">
-            Already have an account?{' '}
             <ChakraLink color="teal.500" href="/login">
-              Log in here
+              Create an Account
             </ChakraLink>
           </Box>
         </Box>
@@ -163,4 +121,4 @@ const SignUpPage = () => {
 
 };
 
-export default SignUpPage;
+export default LoginPage;

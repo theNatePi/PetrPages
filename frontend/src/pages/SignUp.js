@@ -90,7 +90,7 @@ const SignUpPage = () => {
       >
         <Box p={4}
           w = "400px"
-          h = "8000px"
+          h = "800px"
           borderWidth="1px"
           borderRadius="lg"
           overflow="hidden"
@@ -158,7 +158,7 @@ const SignUpPage = () => {
         </Box>
         <Box p={4}
           w = "400px"
-          h = "8000px"
+          h = "800px"
           borderRadius="lg"
           overflow="hidden"
           bg="white"
