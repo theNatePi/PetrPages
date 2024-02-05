@@ -11,7 +11,7 @@ PetrPages beings a new approach to your social expression online -- a single pla
 Each user gets their own page to customize with text and images, and more formats can be supported soon. No posts, no feed, no followers. Just you and what you want to put out there -- all on your PetrPage.
 
 #### Technologies Used
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> React and Chakra UI for frontend
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> Python and FastAPI for backend
 
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="react" width="40" height="40"/> React and Chakra UI for frontend
 
